@@ -28,6 +28,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'lrvick/Conque-Shell'
 Plugin 'tpope/vim-surround'
 Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'mbbill/undotree'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -99,10 +100,10 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" Remove highlight on ./
+" Remove highlight on ,/
 nmap <silent> ,/ :nohlsearch<CR>
 
-cmap w!! w !sudo tee % >/dev/null 
+cmap w!! w !sudo tee % >/dev/null
 
 compiler gcc
 
@@ -129,7 +130,7 @@ noremap <silent> <F3>  :NERDTreeToggle <CR>
 set foldmethod=indent   "fold based on indent
 set foldnestmax=10      "deepest fold is 10 levels
 set nofoldenable        "dont fold by default
-set foldlevel=1         
+set foldlevel=1
 
 "set grepprg=git\ grep\ -n\ -i "use git grep for search
 set grepprg=ack
