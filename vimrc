@@ -13,15 +13,17 @@ Plugin 'majutsushi/tagbar'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'kien/ctrlp.vim'
+Plugin 'jlanzarotta/bufexplorer'
 "Plugin 'powerline/powerline', {'rtp': 'powerline/powerline/bindings/vim/'}
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'davidhalter/jedi-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'moll/vim-node.git'
+Plugin 'ternjs/tern_for_vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'garbas/vim-snipmate'
+Plugin 'sirver/ultisnips'
 Plugin 'tomtom/tlib_vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'honza/vim-snippets'
@@ -29,6 +31,19 @@ Plugin 'lrvick/Conque-Shell'
 Plugin 'tpope/vim-surround'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'mbbill/undotree'
+Plugin 'ervandew/supertab'
+Plugin 'benmills/vimux'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'digitaltoad/vim-jade'
+"Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+Plugin 'Shougo/vimproc.vim'
+Plugin 'dag/vim2hs'
+Plugin 'eagletmt/ghcmod-vim'
+Plugin 'eagletmt/neco-ghc'
+Plugin 'bitc/vim-hdevtools'
+"Plugin 'lukerandall/haskellmode-vim'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'jpalardy/vim-slime'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -222,17 +237,66 @@ set noswapfile     "no swap files
 noremap Q !!$SHELL<CR>
 
 
+set t_Co=256
 "let g:solarized_termcolors=256
 set background=dark
+"colorscheme Dracula
 colorscheme Solarized
 
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
+au FileType haskell nmap <silent> <leader>hl :GhcModLint<CR>
 
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 autocmd BufNewFile,BufReadPost *.hs setl shiftwidth=4 expandtab
+"autocmd BufNewFile,BufRead ~/halo/* NERDTree
 
 "if (exists('+colorcolumn'))
 "	    set colorcolumn=101
 "	        highlight ColorColumn ctermbg=9
 "		endif
+
+" Disable haskell-vim omnifunc
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+let g:haddock_browser = 'google-chrome'
+let g:necoghc_enable_detailed_browse = 1
+
+" Slime send things to tmux instead of screen
+let g:slime_target = "tmux"
+let g:slime_python_ipython = 1
+
+" For tagbar to support haskell
+let g:tagbar_type_haskell = {
+    \ 'ctagsbin'  : 'hasktags',
+    \ 'ctagsargs' : '-x -c -o-',
+    \ 'kinds'     : [
+        \  'm:modules:0:1',
+        \  'd:data: 0:1',
+        \  'd_gadt: data gadt:0:1',
+        \  't:type names:0:1',
+        \  'nt:new types:0:1',
+        \  'c:classes:0:1',
+        \  'cons:constructors:1:1',
+        \  'c_gadt:constructor gadt:1:1',
+        \  'c_a:constructor accessors:1:1',
+        \  'ft:function types:1:1',
+        \  'fi:function implementations:0:1',
+        \  'o:others:0:1'
+    \ ],
+    \ 'sro'        : '.',
+    \ 'kind2scope' : {
+        \ 'm' : 'module',
+        \ 'c' : 'class',
+        \ 'd' : 'data',
+        \ 't' : 'type'
+    \ },
+    \ 'scope2kind' : {
+        \ 'module' : 'm',
+        \ 'class'  : 'c',
+        \ 'data'   : 'd',
+        \ 'type'   : 't'
+    \ }
+\ }
+
