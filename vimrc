@@ -6,44 +6,68 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+
+" Git
 Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'kien/ctrlp.vim'
-Plugin 'jlanzarotta/bufexplorer'
-"Plugin 'powerline/powerline', {'rtp': 'powerline/powerline/bindings/vim/'}
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plugin 'davidhalter/jedi-vim'
-Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'moll/vim-node.git'
+
+" File Navigation
+Plugin 'scrooloose/nerdtree'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+
+"Code Navigation
+Plugin 'majutsushi/tagbar'
+
+" Python
+Plugin 'davidhalter/jedi-vim'
+
+" js and coffee
+"Plugin 'moll/vim-node.git'
 Plugin 'ternjs/tern_for_vim'
-Plugin 'terryma/vim-multiple-cursors'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'pangloss/vim-javascript'
+
+" Snippets
 Plugin 'sirver/ultisnips'
+"Plugin 'garbas/vim-snipmate'
 Plugin 'tomtom/tlib_vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'honza/vim-snippets'
-Plugin 'lrvick/Conque-Shell'
-Plugin 'tpope/vim-surround'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'mbbill/undotree'
-Plugin 'ervandew/supertab'
+
+"tmux integration
 Plugin 'benmills/vimux'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'digitaltoad/vim-jade'
-"Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+Plugin 'jpalardy/vim-slime'
+
+"Utilities
+Plugin 'tpope/vim-surround'
+Plugin 'Raimondi/delimitMate'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'scrooloose/syntastic'
+Plugin 'mbbill/undotree'
+Plugin 'ervandew/supertab'
+Plugin 'Yggdroot/indentLine'
+
+"haskell
 Plugin 'Shougo/vimproc.vim'
 Plugin 'dag/vim2hs'
 Plugin 'eagletmt/ghcmod-vim'
 Plugin 'eagletmt/neco-ghc'
 Plugin 'bitc/vim-hdevtools'
+
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'godlygeek/tabular'
+"Plugin 'altercation/vim-colors-solarized'
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+"Plugin 'lrvick/Conque-Shell'
+Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 "Plugin 'lukerandall/haskellmode-vim'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'jpalardy/vim-slime'
+"Plugin 'Shougo/neocomplete.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -64,6 +88,7 @@ filetype plugin indent on    " required
 set encoding=utf-8
 set termencoding=utf-8
 set tabstop=4     " a tab is four spaces
+set expandtab
 set backspace=indent,eol,start
                   " allow backspacing over everything in insert mode
 set autoindent    " always set autoindenting on
@@ -101,6 +126,12 @@ map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Ctrl+b lists open buffers. Ctrlp thing
 map <C-b> :CtrlPBuffer<CR>
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+let g:ctrlp_funky_matchtype = 'path'
+
 
 set pastetoggle=<F2>
 nnoremap <silent> <F6> :TagbarToggle<CR> 	" For tag bar
@@ -157,7 +188,7 @@ command Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw "List all todos and fixmes
 au FileType python set omnifunc=jedi#completions
 " au FileType python set omnifunc=pythoncomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
-set completeopt=menuone,longest,preview
+set completeopt=menuone,longest
 
 "for pyflakes
 let g:pyflakes_use_quickfix = 0 "pyflakes no quickfix window
@@ -241,7 +272,7 @@ set t_Co=256
 "let g:solarized_termcolors=256
 set background=dark
 "colorscheme Dracula
-colorscheme Solarized
+"colorscheme Solarized
 
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
@@ -249,6 +280,7 @@ au FileType haskell nmap <silent> <leader>hl :GhcModLint<CR>
 
 autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 autocmd BufNewFile,BufReadPost *.hs setl shiftwidth=4 expandtab
+autocmd BufNewFile,BufReadPost *.js setl shiftwidth=4 expandtab
 "autocmd BufNewFile,BufRead ~/halo/* NERDTree
 
 "if (exists('+colorcolumn'))
@@ -259,6 +291,9 @@ autocmd BufNewFile,BufReadPost *.hs setl shiftwidth=4 expandtab
 " Disable haskell-vim omnifunc
 let g:haskellmode_completion_ghc = 0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+autocmd FileType js set suffixesadd+=.js
+autocmd FileType javascript set suffixesadd+=.js
 
 let g:haddock_browser = 'google-chrome'
 let g:necoghc_enable_detailed_browse = 1
@@ -300,3 +335,35 @@ let g:tagbar_type_haskell = {
     \ }
 \ }
 
+let delimitMate_expand_cr = 2
+
+"snipmate
+imap <C-J> <Plug>snipMateNextOrTrigger
+smap <C-J> <Plug>snipMateNextOrTrigger
+
+" indentline
+let g:indentLine_color_term = 239
+let g:indentLine_faster = 1
+let g:indentLine_concealcursor="c"
+let g:indentLine_conceallevel=1
+
+"syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height=5
+
+"ultisnips
+let g:UltiSnipsExpandTrigger="<c-space>"
+let g:UltiSnipsJumpForwardTrigger="<c-space>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+
+"javascript
+let g:javascript_conceal_function   = "λ"
+let g:javascript_conceal_this = "@"
+let g:javascript_conceal_null       = "ø"
+let g:javascript_conceal_return = "<"
+let g:javascript_conceal_prototype = "#"
+
+"tern
+let g:tern_map_keys=1
+let g:tern_show_argument_hints='on_hold'
