@@ -14,6 +14,7 @@ Plugin 'airblade/vim-gitgutter'
 " File Navigation
 Plugin 'scrooloose/nerdtree'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'fholgado/minibufexpl.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
 
@@ -22,6 +23,13 @@ Plugin 'majutsushi/tagbar'
 
 " Python
 Plugin 'davidhalter/jedi-vim'
+
+"Ruby
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'vim-scripts/ruby-matchit'
+Plugin 'thoughtbot/vim-rspec'
+"Plugin 'astashov/vim-ruby-debugger'
 
 " js and coffee
 "Plugin 'moll/vim-node.git'
@@ -44,6 +52,7 @@ Plugin 'jpalardy/vim-slime'
 
 "Utilities
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-endwise'
 Plugin 'Raimondi/delimitMate'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'terryma/vim-multiple-cursors'
@@ -51,6 +60,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'mbbill/undotree'
 Plugin 'ervandew/supertab'
 Plugin 'Yggdroot/indentLine'
+Plugin 'mileszs/ack.vim'
+Plugin 'vim-scripts/ZoomWin'
 
 "haskell
 Plugin 'Shougo/vimproc.vim'
@@ -146,12 +157,16 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Easy window resize
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+
 " Remove highlight on ,/
 nmap <silent> ,/ :nohlsearch<CR>
 
 cmap w!! w !sudo tee % >/dev/null
 
-compiler gcc
+"compiler gcc
 
 
 " Correct typos
@@ -367,3 +382,16 @@ let g:javascript_conceal_prototype = "#"
 "tern
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
+
+"Ruby
+autocmd Filetype ruby setlocal re=1
+autocmd Filetype ruby setlocal tabstop=2
+autocmd Filetype ruby setlocal shiftwidth=2
+let g:syntastic_ruby_checkers = ['rubocop']
+
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+let g:rspec_runner = "os_x_iterm2"
