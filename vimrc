@@ -14,21 +14,27 @@ Plugin 'airblade/vim-gitgutter'
 " File Navigation
 Plugin 'scrooloose/nerdtree'
 Plugin 'jlanzarotta/bufexplorer'
-Plugin 'fholgado/minibufexpl.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
+"Plugin 'fholgado/minibufexpl.vim'
+"Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/fzf'
 
 "Code Navigation
 Plugin 'majutsushi/tagbar'
 
 " Python
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 
 "Ruby
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
+Plugin 'tmhedberg/matchit'
 Plugin 'vim-scripts/ruby-matchit'
 Plugin 'thoughtbot/vim-rspec'
+Plugin 'jgdavey/vim-turbux'
+Plugin 'ecomba/vim-ruby-refactoring'
+
 "Plugin 'astashov/vim-ruby-debugger'
 
 " js and coffee
@@ -49,8 +55,13 @@ Plugin 'honza/vim-snippets'
 Plugin 'benmills/vimux'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'jpalardy/vim-slime'
+"Plugin 'tpope/vim-dispatch'
 
 "Utilities
+Plugin 'xolox/vim-notes'
+Plugin 'xolox/vim-misc'
+"Plugin 'jceb/vim-orgmode'
+Plugin 'tpope/vim-speeddating'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
 Plugin 'Raimondi/delimitMate'
@@ -62,6 +73,10 @@ Plugin 'ervandew/supertab'
 Plugin 'Yggdroot/indentLine'
 Plugin 'mileszs/ack.vim'
 Plugin 'vim-scripts/ZoomWin'
+Plugin 'ryanoasis/vim-devicons'
+"Plugin 'kien/rainbow_parentheses.vim'
+"Plugin 'pydave/AsyncCommand'
+"Plugin 'stgpetrovic/syntastic-async'
 
 "haskell
 Plugin 'Shougo/vimproc.vim'
@@ -69,6 +84,9 @@ Plugin 'dag/vim2hs'
 Plugin 'eagletmt/ghcmod-vim'
 Plugin 'eagletmt/neco-ghc'
 Plugin 'bitc/vim-hdevtools'
+Plugin 'lukerandall/haskellmode-vim'
+Plugin 'Twinside/vim-hoogle'
+Plugin 'mpickering/hlint-refactor-vim'
 
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/YouCompleteMe'
@@ -77,7 +95,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 "Plugin 'lrvick/Conque-Shell'
 Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
-"Plugin 'lukerandall/haskellmode-vim'
+"Plugin 'whatyouhide/vim-gotham'
 "Plugin 'Shougo/neocomplete.vim'
 
 call vundle#end()            " required
@@ -136,12 +154,17 @@ endif
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Ctrl+b lists open buffers. Ctrlp thing
-map <C-b> :CtrlPBuffer<CR>
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-nnoremap <Leader>fu :CtrlPFunky<Cr>
-" narrow the list down with a word under cursor
-nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
-let g:ctrlp_funky_matchtype = 'path'
+"map <C-b> :CtrlPBuffer<CR>
+"let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+"nnoremap <Leader>fu :CtrlPFunky<Cr>
+"" narrow the list down with a word under cursor
+"nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+"let g:ctrlp_funky_matchtype = 'path'
+
+
+map <C-p> :FZF<CR>
+map <C-b> :Buffers<CR>
+nnoremap <Leader>g :execute 'Ag ' . expand('<cword>')<Cr>
 
 
 set pastetoggle=<F2>
@@ -160,6 +183,10 @@ map <C-l> <C-w>l
 " Easy window resize
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+map <C-H> <C-w><
+map <C-J> <C-w>-
+map <C-K> <C-w>+
+map <C-L> <C-w>>
 
 " Remove highlight on ,/
 nmap <silent> ,/ :nohlsearch<CR>
@@ -194,7 +221,7 @@ set nofoldenable        "dont fold by default
 set foldlevel=1
 
 "set grepprg=git\ grep\ -n\ -i "use git grep for search
-set grepprg=ack
+set grepprg=ag
 
 command Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw "List all todos and fixmes
 
@@ -286,8 +313,7 @@ noremap Q !!$SHELL<CR>
 set t_Co=256
 "let g:solarized_termcolors=256
 set background=dark
-"colorscheme Dracula
-"colorscheme Solarized
+colorscheme peachpuff
 
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
@@ -306,6 +332,8 @@ autocmd BufNewFile,BufReadPost *.js setl shiftwidth=4 expandtab
 " Disable haskell-vim omnifunc
 let g:haskellmode_completion_ghc = 0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+autocmd Filetype haskell set lazyredraw
 
 autocmd FileType js set suffixesadd+=.js
 autocmd FileType javascript set suffixesadd+=.js
@@ -387,7 +415,10 @@ let g:tern_show_argument_hints='on_hold'
 autocmd Filetype ruby setlocal re=1
 autocmd Filetype ruby setlocal tabstop=2
 autocmd Filetype ruby setlocal shiftwidth=2
-let g:syntastic_ruby_checkers = ['rubocop']
+autocmd Filetype ruby ab pry binding.pry
+autocmd Filetype ruby set nocursorline
+autocmd Filetype ruby set lazyredraw
+let g:syntastic_ruby_checkers = []
 
 " RSpec.vim mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -395,3 +426,4 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 let g:rspec_runner = "os_x_iterm2"
+"let g:rspec_command = "rspec {spec}"
